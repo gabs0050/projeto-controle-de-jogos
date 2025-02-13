@@ -59,3 +59,11 @@ const selectAllJogo =  async function(){
 const selectByIdJogo =  async function(){
 
 }
+
+module.exports = {
+    insertJogo,
+    updateJogo,
+    deleteJogo,
+    selectAllJogo,
+    selectByIdJogo,
+}
