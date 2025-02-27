@@ -10,6 +10,8 @@ const { PrismaClient } = require('@prisma/client')
 
 //Função para inserir no Banco de Dados um novo jogo
 const insertJogo =  async function(jogo){
+    try {
+
     //Instância da classe do prisma client para gerar um objeto
     const prisma = new PrismaClient()
 
@@ -38,6 +40,10 @@ const insertJogo =  async function(jogo){
         return true
     else
         return false
+    } catch (error) {
+    // console.log(error)
+        return false
+    }
 }
 
 //Função para atualizar no Banco de Dados um novo jogo

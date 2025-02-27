@@ -12,7 +12,10 @@ const MESSAGE = require('../../modulo/config.js')
 const jogoDAO = require('../../model/DAO/jogo.js')
 
 //Função para inserir um novo jogo
-const inserirJogo = async function(jogo){
+const inserirJogo = async function(jogo, contentType){
+    try{
+
+        if(contentType == 'application/json'){
     if(
         jogo.nome            == undefined || jogo.nome            == ''      || jogo.nome            == null   || jogo.nome.length            > 80 ||
         jogo.data_lancamento == undefined || jogo.data_lancamento == ''      || jogo.data_lancamento == null   || jogo.data_lancamento.length > 10 ||
@@ -30,8 +33,14 @@ const inserirJogo = async function(jogo){
         if(resultJogo)
             return MESSAGE.SUCESS_CREATED_ITEM //200
         else
-            return MESSAGE.ERROR_INTERNAL_SERVER //500
+            return MESSAGE.ERROR_INTERNAL_SERVER_MODEL //500
     }
+}else{
+    return MESSAGE.ERROR_CONTENT_TYPE //415
+}
+}catch (error) {
+    return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLER //500
+}
 }
 
 //Função para atualizar um jogo

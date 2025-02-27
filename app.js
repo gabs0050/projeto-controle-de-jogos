@@ -47,6 +47,8 @@ app.use((request, response, next) =>{
 //EndPoint para criar um jogo no BD
 app.post('/v1/controle-jogos/jogo', cors(), bodyParserJSON, async function (request, response) {
     
+    //Recebe o content type para validar o tipo de dados da requisição
+    let contentType = request.headers['content-type']
     //Recebe o conteúdo do body da requisição
     let dadosBody = request.body
 
