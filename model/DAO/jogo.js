@@ -76,8 +76,18 @@ const selectAllJogo =  async function(){
 }
 
 //Função para buscar no Banco de Dados um jogo pelo ID
-const selectByIdJogo =  async function(){
+const selectByIdJogo = async function (id) {
+    try {
+        let sql = `select * from tbl_jogo where id = ${id}`
+        let result = await prisma.$queryRawUnsafe(sql)
 
+        if (result.length > 0)
+            return result[0]
+        else
+            return false
+    } catch (error) {
+        return false
+    }
 }
 
 module.exports = {
@@ -85,5 +95,5 @@ module.exports = {
     updateJogo,
     deleteJogo,
     selectAllJogo,
-    selectByIdJogo,
+    selectByIdJogo
 }

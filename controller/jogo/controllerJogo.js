@@ -60,7 +60,7 @@ const listarJogo = async function(){
     //Chama a função para retornar os dados do jogo
     let resultJogo = await jogoDAO.selectAllJogo()
 
-        if (resultJogo != false) {
+        if (resultJogo != false || typeof (resultJogo) == 'object') {
 
     if(resultJogo.length > 0){
 
@@ -87,8 +87,34 @@ const listarJogo = async function(){
 }
 
 //Função para buscar um jogo
-const buscarJogo = async function(){
+const buscarJogo = async function(id){
+    try {
+        let jogo = await selectByIdJogo(id)
+        let dadosJogos = {}
+    //Chama a função para retornar os dados do jogo
+    let resultJogo = await jogoDAO.selectAllJogo()
 
+        if (resultJogo != false || typeof (resultJogo) == 'object') {
+
+    if(resultJogo.length > 0){
+
+         //Cria um objeto do tipo JSON para retornar a lista de jogos
+        dadosJogos.status = true
+        dadosJogos.status_code = 200
+        dadosJogos.items = resultJogo.length
+        dadosJogos.games = resultJogo
+        
+        return dadosJogos //200
+    }else{
+        return MESSAGE.ERROR_NOT_FOUND //404
+    }
+}else{
+    return MESSAGE.ERROR_INTERNAL_SERVER_MODEL //500
+}
+
+    } catch(error) {
+        return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLER //500
+    }
 }
 
 module.exports = {

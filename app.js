@@ -68,6 +68,17 @@ app.get('/v1/controle-jogos/jogo', cors (), async function (request, response){
     response.json(resultJogo)
 })
 
+app.get('/v1/controle-jogos/jogo/:id', cors(), async function (request, response) {
+    // Extrai o ID do parâmetro da URL
+    let idJogo = request.params.id
+
+    // Chama a função para buscar o jogo pelo ID
+    let resultJogo = await controllerJogo.buscarJogo(idJogo)
+
+    response.status(resultJogo.status_code)
+    response.json(resultJogo)
+})
+
 app.listen(8080, function(){
     console.log('API aguardando Requisições...')
 })
