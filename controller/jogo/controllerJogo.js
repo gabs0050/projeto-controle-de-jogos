@@ -55,6 +55,34 @@ const excluirJogo = async function(){
 
 //Função para retornar todos os jogos
 const listarJogo = async function(){
+    try {
+    let dadosJogos = {}
+    //Chama a função para retornar os dados do jogo
+    let resultJogo = await jogoDAO.selectAllJogo()
+
+        if (resultJogo != false) {
+
+    if(resultJogo.length > 0){
+
+         //Cria um objeto do tipo JSON para retornar a lista de jogos
+        dadosJogos.status = true
+        dadosJogos.status_code = 200
+        dadosJogos.items = resultJogo.length
+        dadosJogos.games = resultJogo
+        
+        return dadosJogos //200
+    }else{
+        return MESSAGE.ERROR_NOT_FOUND //404
+    }
+}else{
+    return MESSAGE.ERROR_INTERNAL_SERVER_MODEL //500
+}
+
+    } catch(error) {
+        return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLER //500
+    }
+
+
 
 }
 

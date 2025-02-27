@@ -59,6 +59,15 @@ app.post('/v1/controle-jogos/jogo', cors(), bodyParserJSON, async function (requ
     response.json(resultJogo)
 })
 
+//EndPoint para retornar uma lista de jogos
+app.get('/v1/controle-jogos/jogo', cors (), async function (request, response){
+    //Chama a função para listar os jogos
+    let resultJogo = await controllerJogo.listarJogo()
+
+    response.status(resultJogo.status_code)
+    response.json(resultJogo)
+})
+
 app.listen(8080, function(){
     console.log('API aguardando Requisições...')
 })
