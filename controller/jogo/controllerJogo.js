@@ -50,11 +50,16 @@ const atualizarJogo = async function(){
 //Função para excluir um jogo
 const excluirJogo = async function(id){
     try {
+        // Verifica se o ID é um número válido
+        if (isNaN(id)) {
+            return { status: false, status_code: 400, message: MESSAGE.ERROR_REQUIRED_FIELDS }
+        }
+
         // Chama a função para excluir o jogo pelo ID
         let resultJogo = await jogoDAO.deleteJogo(id)
 
         if (resultJogo)
-            return { status: true, status_code: 200, message: "Jogo excluído com sucesso!" }
+            return MESSAGE.SUCESS_DELETED_ITEM //200
         else
             return MESSAGE.ERROR_NOT_FOUND //404
     } catch (error) {
