@@ -52,8 +52,18 @@ const updateJogo =  async function(){
 }
 
 //Função para excluir no Banco de Dados um novo jogo
-const deleteJogo =  async function(){
+const deleteJogo = async function(id){
+    try {
+        let sql = `delete from tbl_jogo where id = ${id}`
+        let result = await prisma.$executeRawUnsafe(sql)
 
+        if (result)
+            return true
+        else
+            return false
+    } catch (error) {
+        return false
+    }
 }
 
 //Função para retornar do Banco de Dados uma lista de jogos

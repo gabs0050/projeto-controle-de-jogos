@@ -53,7 +53,7 @@ app.post('/v1/controle-jogos/jogo', cors(), bodyParserJSON, async function (requ
     let dadosBody = request.body
 
     //Encaminhando os dados do body da requisição para a controller inserir no BD
-    let resultJogo = await controllerJogo.inserirJogo(dadosBody)
+    let resultJogo = await controllerJogo.inserirJogo(dadosBody, contentType)
     
     response.status(resultJogo.status_code)
     response.json(resultJogo)
@@ -74,6 +74,17 @@ app.get('/v1/controle-jogos/jogo/:id', cors(), async function (request, response
 
     // Chama a função para buscar o jogo pelo ID
     let resultJogo = await controllerJogo.buscarJogo(idJogo)
+
+    response.status(resultJogo.status_code)
+    response.json(resultJogo)
+})
+
+app.delete('/v1/controle-jogos/deletar/jogo/:id', cors(), async function (request, response) {
+    // Extrai o ID do parâmetro da URL
+    let idJogo = request.params.id
+
+    // Chama a função para excluir o jogo pelo ID
+    let resultJogo = await controllerJogo.excluirJogo(idJogo)
 
     response.status(resultJogo.status_code)
     response.json(resultJogo)
