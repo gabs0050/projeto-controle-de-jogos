@@ -47,14 +47,35 @@ const insertJogo =  async function(jogo){
 }
 
 //Função para atualizar no Banco de Dados um novo jogo
-const updateJogo =  async function(){
+const updateJogo =  async function(jogo){
+    try {
+        let sql = `update tbl_jogo set  nome             = '${jogo.nome}',
+                                        data_lancamento  = '${jogo.data_lancamento}',
+                                        versao           = '${jogo.versao}',
+                                        tamanho          = '${jogo.tamanho}',
+                                        descricao        = '${jogo.descricao}',
+                                        foto_capa        = '${jogo.foto_capa}',
+                                        link             = '${jogo.link}'
+                                where id = ${jogo.id}`
 
+        let result = await prisma.$executeRawUnsafe(sql)            
+        
+        if(result)
+            return true
+        else
+            return false
+    } catch (error) {
+        return false
+    }
 }
 
 //Função para excluir no Banco de Dados um novo jogo
 const deleteJogo = async function(id){
     try {
+        //Script SQL para retornar os dados do BD
         let sql = `delete from tbl_jogo where id = ${id}`
+
+        //Executa o script SQL no BD e aguarda o retorno dos dados
         let result = await prisma.$executeRawUnsafe(sql)
 
         if (result)
@@ -88,7 +109,10 @@ const selectAllJogo =  async function(){
 //Função para buscar no Banco de Dados um jogo pelo ID
 const selectByIdJogo = async function (id) {
     try {
+        //Script SQL para retornar os dados do BD
         let sql = `select * from tbl_jogo where id = ${id}`
+
+        //Executa o script SQL no BD e aguarda o retorno dos dados
         let result = await prisma.$queryRawUnsafe(sql)
 
         if (result.length > 0)
