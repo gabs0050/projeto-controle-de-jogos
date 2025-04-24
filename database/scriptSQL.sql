@@ -3,7 +3,7 @@
 
 use db_controle_jogos_bb;
 
-#Cria a tabela de jogos
+--Cria a tabela de jogos
 create table tbl_jogo (
 	id 				INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     nome 			VARCHAR(80) NOT NULL,
@@ -15,7 +15,7 @@ create table tbl_jogo (
     link 			VARCHAR(200)
 );
 
-#Cria a tabela desenvolvedora
+--Cria a tabela desenvolvedora
 CREATE TABLE tbl_desenvolvedora (
     id_desenvolvedora        INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     nome_desenvolvedora      VARCHAR(100) NOT NULL,
@@ -23,14 +23,14 @@ CREATE TABLE tbl_desenvolvedora (
     logo_desenvolvedora      VARCHAR(250) NULL
 );
 
-#Cria a tabela sexo
+--Cria a tabela sexo
 CREATE TABLE tbl_sexo (
   id        INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   sigla     VARCHAR(1) NULL,
-  nome_sexo VARCHAR(30) NULL,
+  nome_sexo VARCHAR(30) NULL
 );
 
-#Cria a tabela usuarios
+--Cria a tabela usuarios
 CREATE TABLE tbl_usuarios (
     id_usuario     INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     nome_usuario   VARCHAR(80) NOT NULL,
@@ -41,19 +41,22 @@ CREATE TABLE tbl_usuarios (
     FOREIGN KEY (tbl_sexo_id) REFERENCES tbl_sexo (id)
 );
 
+--Cria a tabela genero
 CREATE TABLE tbl_genero (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  nome VARCHAR(100) NULL,
+  nome VARCHAR(100) NULL
 );
 
+--Cria a tabela plataforma
 CREATE TABLE tbl_plataforma (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  nome VARCHAR(100) NULL,
+  nome VARCHAR(100) NULL
 );
 
+--Cria a tabela tipo_moeda
 CREATE TABLE tbl_tipo_moeda (
   id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  tipo_moeda VARCHAR(45) NULL,
+  tipo_moeda VARCHAR(45) NULL
 );
 
 -- SHOW TABLES;
