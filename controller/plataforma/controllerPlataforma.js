@@ -73,7 +73,7 @@ const atualizarPlataforma = async function (plataforma, id) {
     }
 }
 
-// Função para excluir uma plataforma
+// Função para excluir uma plataforma.
 const excluirPlataforma = async function (id) {
     try {
         if (isNaN(id) || id <= 0) {
