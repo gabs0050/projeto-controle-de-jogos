@@ -33,6 +33,9 @@ const controllerSexo = require('./controller/sexo/controllerSexo.js')
 const controllerGenero = require('./controller/genero/controllerGenero.js')
 const controllerPlataforma = require('./controller/plataforma/controllerPlataforma.js')
 const controllerTipoMoeda = require('./controller/tipo moeda/controllerTipoMoeda.js')
+const controllerUsuarios = require('./controller/usuarios/controllerUsuarios.js')
+const controllerPreco = require('./controller/preco/controllerPreco.js')
+
 
 //Estabelecendo formato de dados que deverá chegar no body da requisição (POST ou PUT)
 const bodyParserJSON = bodyParser.json()
@@ -328,6 +331,89 @@ app.put('/v1/controle-jogos/tipo-moeda/:id', bodyParserJSON, async (request, res
 app.delete('/v1/controle-jogos/tipo-moeda/:id', async (request, response) => {
     let id = parseInt(request.params.id)
     let result = await controllerTipoMoeda.excluirTipoMoeda(id)
+    response.status(result.status_code).json(result)
+})
+
+/*********************** tbl_usuario *************************/
+
+// Endpoint para inserir um novo usuário
+app.post('/v1/controle-jogos/usuarios', cors(), bodyParserJSON, async (request, response) => {
+    const contentType = request.headers['content-type']
+    const dadosBody = request.body
+
+    const result = await controllerUsuarios.inserirUsuario(dadosBody, contentType)
+    response.status(result.status_code).json(result)
+})
+
+// Endpoint para listar todos os usuários
+app.get('/v1/controle-jogos/usuarios', async (request, response) => {
+    let result = await controllerUsuarios.listarUsuarios()
+    response.status(result.status_code).json(result)
+})
+
+// Endpoint para buscar um usuário por ID
+app.get('/v1/controle-jogos/usuarios/:id', async (request, response) => {
+    let id = parseInt(request.params.id)
+    let result = await controllerUsuarios.buscarUsuario(id)
+    response.status(result.status_code).json(result)
+})
+
+// Endpoint para atualizar um usuário
+app.put('/v1/controle-jogos/usuarios/:id', cors(), bodyParserJSON, async (request, response) => {
+    const contentType = request.headers['content-type']
+    const id = parseInt(request.params.id)
+    const dadosBody = request.body
+
+    const result = await controllerUsuarios.atualizarUsuario(id, dadosBody, contentType)
+    response.status(result.status_code).json(result)
+})
+
+// Endpoint para excluir um usuário
+app.delete('/v1/controle-jogos/usuarios/:id', async (request, response) => {
+    let id = parseInt(request.params.id)
+    let result = await controllerUsuarios.excluirUsuario(id)
+    response.status(result.status_code).json(result)
+})
+
+/*********************** tbl_preco *************************/
+// Endpoint para inserir um novo preço
+app.post('/v1/controle-jogos/preco', cors(), bodyParserJSON, async (request, response) => {
+    const contentType = request.headers['content-type']
+    const dadosBody = request.body
+
+    const result = await controllerPreco.inserirPreco(dadosBody, contentType)
+    response.status(result.status_code).json(result)
+})
+
+// Endpoint para listar todos os preços
+app.get('/v1/controle-jogos/preco', cors(), async (request, response) => {
+    const result = await controllerPreco.listarPrecos()
+    response.status(result.status_code).json(result)
+})
+
+// Endpoint para buscar um preço por ID
+app.get('/v1/controle-jogos/preco/:id', cors(), async (request, response) => {
+    const id = parseInt(request.params.id)
+
+    const result = await controllerPreco.buscarPreco(id)
+    response.status(result.status_code).json(result)
+})
+
+// Endpoint para atualizar um preço
+app.put('/v1/controle-jogos/preco/:id', cors(), bodyParserJSON, async (request, response) => {
+    const contentType = request.headers['content-type']
+    const id = parseInt(request.params.id)
+    const dadosBody = request.body
+
+    const result = await controllerPreco.atualizarPreco(id, dadosBody, contentType)
+    response.status(result.status_code).json(result)
+})
+
+// Endpoint para excluir um preço
+app.delete('/v1/controle-jogos/preco/:id', cors(), async (request, response) => {
+    const id = parseInt(request.params.id)
+
+    const result = await controllerPreco.excluirPreco(id)
     response.status(result.status_code).json(result)
 })
 

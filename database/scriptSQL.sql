@@ -59,5 +59,59 @@ CREATE TABLE tbl_tipo_moeda (
   tipo_moeda VARCHAR(45) NULL
 );
 
+-- Cria a tabela preco
+CREATE TABLE tbl_preco (
+  id INT NOT NULL AUTO_INCREMENT,
+  valor DECIMAL(5,2) NOT NULL,
+  id_jogo INT NOT NULL,
+  id_tipo_moeda INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_jogo) REFERENCES tbl_jogo (id),
+  FOREIGN KEY (id_tipo_moeda) REFERENCES tbl_tipo_moeda (id)
+);
+
+-- Cria a tabela desenvolvedora_jogo
+CREATE TABLE tbl_desenvolvedora_jogo (
+  id INT NOT NULL AUTO_INCREMENT,
+  id_desenvolvedora INT NOT NULL,
+  id_jogo INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_desenvolvedora) REFERENCES tbl_desenvolvedora (id_desenvolvedora),
+  FOREIGN KEY (id_jogo) REFERENCES tbl_jogo (id)
+);
+
+-- Cria a tabela avaliacoes
+CREATE TABLE tbl_avaliacoes (
+  id_avaliacao INT NOT NULL AUTO_INCREMENT,
+  nota_jogo INT NULL,
+  comentario VARCHAR(1000) NULL,
+  data_avaliacao DATE NULL,
+  id_jogo INT NOT NULL,
+  id_usuario INT NOT NULL,
+  PRIMARY KEY (id_avaliacao),
+  FOREIGN KEY (id_jogo) REFERENCES tbl_jogo (id),
+  FOREIGN KEY (id_usuario) REFERENCES tbl_usuarios (id_usuario)
+);
+
+-- Cria a tabela plataforma_jogo
+CREATE TABLE tbl_plataforma_jogo (
+  id INT NOT NULL AUTO_INCREMENT,
+  id_jogo INT NOT NULL,
+  id_plataforma INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_jogo) REFERENCES tbl_jogo (id),
+  FOREIGN KEY (id_plataforma) REFERENCES tbl_plataforma (id)
+);
+
+CREATE TABLE tbl_genero_jogo (
+  id INT NOT NULL AUTO_INCREMENT,
+  id_jogo INT NOT NULL,
+  id_genero INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (id_jogo) REFERENCES tbl_jogo (id),
+  FOREIGN KEY (id_genero) REFERENCES tbl_genero (id)
+);
+
+
 -- SHOW TABLES;
 -- DESC tbl_jogo;

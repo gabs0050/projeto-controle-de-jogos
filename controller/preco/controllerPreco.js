@@ -1,5 +1,5 @@
 /*************************************************************************************
- * Objetivo: Controller responsável pela regra de negócio referente ao CRUD de Usuários
+ * Objetivo: Controller responsável pela regra de negócio referente ao CRUD de Preços
  * Data: 11/02/2025
  * Autor: Gabriel Souza Costa
  * Versão: 1.0
@@ -9,21 +9,23 @@
 const MESSAGE = require('../../modulo/config.js')
 
 // Import do arquivo para realizar o CRUD de dados no Banco de Dados
-const usuariosDAO = require('../../model/DAO/usuarios.js')
+const precoDAO = require('../../model/DAO/preco.js')
 
-// Função para inserir um novo usuário
-const inserirUsuario = async function (usuario, contentType) {
+// Função para inserir um novo preço
+const inserirPreco = async function (preco, contentType) {
     try {
         if (String(contentType).toLowerCase() === 'application/json') {
             if (
-                !usuario.nome_usuario ||
-                !usuario.email ||
-                !usuario.senha ||
-                !usuario.tbl_sexo_id
+                !preco.valor ||
+                !preco.id_jogo ||
+                !preco.id_tipo_moeda ||
+                isNaN(preco.valor) ||
+                isNaN(preco.id_jogo) ||
+                isNaN(preco.id_tipo_moeda)
             ) {
                 return MESSAGE.ERROR_REQUIRED_FIELDS // 400
             } else {
-                let result = await usuariosDAO.insertUsuario(usuario)
+                let result = await precoDAO.insertPreco(preco)
 
                 if (result) {
                     return MESSAGE.SUCESS_CREATED_ITEM // 201
@@ -35,29 +37,32 @@ const inserirUsuario = async function (usuario, contentType) {
             return MESSAGE.ERROR_CONTENT_TYPE // 415
         }
     } catch (error) {
-        console.error('Erro na controller inserirUsuario:', error)
+        console.error('Erro na controller inserirPreco:', error)
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-// Função para atualizar um usuário
-const atualizarUsuario = async function (id, usuario, contentType) {
+// Função para atualizar um preço
+const atualizarPreco = async function (id, preco, contentType) {
     try {
         if (String(contentType).toLowerCase() === 'application/json') {
             if (
                 !id ||
-                !usuario.nome_usuario ||
-                !usuario.email ||
-                !usuario.senha ||
-                !usuario.tbl_sexo_id
+                !preco.valor ||
+                !preco.id_jogo ||
+                !preco.id_tipo_moeda ||
+                isNaN(id) ||
+                isNaN(preco.valor) ||
+                isNaN(preco.id_jogo) ||
+                isNaN(preco.id_tipo_moeda)
             ) {
                 return MESSAGE.ERROR_REQUIRED_FIELDS // 400
             } else {
-                let usuarioExistente = await usuariosDAO.selectByIdUsuario(id)
+                let precoExistente = await precoDAO.selectByIdPreco(id)
 
-                if (usuarioExistente) {
-                    usuario.id_usuario = id
-                    let result = await usuariosDAO.updateUsuario(usuario)
+                if (precoExistente) {
+                    preco.id = id
+                    let result = await precoDAO.updatePreco(preco)
 
                     if (result) {
                         return MESSAGE.SUCESS_UPDATED_ITEM // 200
@@ -72,21 +77,21 @@ const atualizarUsuario = async function (id, usuario, contentType) {
             return MESSAGE.ERROR_CONTENT_TYPE // 415
         }
     } catch (error) {
-        console.error('Erro na controller atualizarUsuario:', error)
+        console.error('Erro na controller atualizarPreco:', error)
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-// Função para excluir um usuário
-const excluirUsuario = async function (id) {
+// Função para excluir um preço
+const excluirPreco = async function (id) {
     try {
         if (!id || isNaN(id) || id <= 0) {
             return MESSAGE.ERROR_REQUIRED_FIELDS // 400
         } else {
-            let usuarioExistente = await usuariosDAO.selectByIdUsuario(id)
+            let precoExistente = await precoDAO.selectByIdPreco(id)
 
-            if (usuarioExistente) {
-                let result = await usuariosDAO.deleteUsuario(id)
+            if (precoExistente) {
+                let result = await precoDAO.deletePreco(id)
 
                 if (result) {
                     return MESSAGE.SUCESS_DELETED_ITEM // 200
@@ -98,60 +103,60 @@ const excluirUsuario = async function (id) {
             }
         }
     } catch (error) {
-        console.error('Erro na controller excluirUsuario:', error)
+        console.error('Erro na controller excluirPreco:', error)
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-// Função para listar todos os usuários
-const listarUsuarios = async function () {
+// Função para listar todos os preços
+const listarPrecos = async function () {
     try {
-        let result = await usuariosDAO.selectAllUsuarios()
+        let result = await precoDAO.selectAllPrecos()
 
         if (result) {
             return {
                 status: true,
                 status_code: 200,
                 items: result.length,
-                usuarios: result
+                precos: result
             }
         } else {
             return MESSAGE.ERROR_NOT_FOUND // 404
         }
     } catch (error) {
-        console.error('Erro na controller listarUsuarios:', error)
+        console.error('Erro na controller listarPrecos:', error)
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-// Função para buscar um usuário pelo ID
-const buscarUsuario = async function (id) {
+// Função para buscar um preço pelo ID
+const buscarPreco = async function (id) {
     try {
         if (!id || isNaN(id) || id <= 0) {
             return MESSAGE.ERROR_REQUIRED_FIELDS // 400
         } else {
-            let result = await usuariosDAO.selectByIdUsuario(id)
+            let result = await precoDAO.selectByIdPreco(id)
 
             if (result) {
                 return {
                     status: true,
                     status_code: 200,
-                    usuario: result
+                    preco: result
                 }
             } else {
                 return MESSAGE.ERROR_NOT_FOUND // 404
             }
         }
     } catch (error) {
-        console.error('Erro na controller buscarUsuario:', error)
+        console.error('Erro na controller buscarPreco:', error)
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
 module.exports = {
-    inserirUsuario,
-    atualizarUsuario,
-    excluirUsuario,
-    listarUsuarios,
-    buscarUsuario
+    inserirPreco,
+    atualizarPreco,
+    excluirPreco,
+    listarPrecos,
+    buscarPreco
 }

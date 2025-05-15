@@ -5,5 +5,9 @@
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "prisma": "^6.4.0"
+  },
+  "devDependencies": {
+    "@ljharb/tsconfig": "^0.3.2",
+    "typescript": "^5.8.3"
   }
 }
