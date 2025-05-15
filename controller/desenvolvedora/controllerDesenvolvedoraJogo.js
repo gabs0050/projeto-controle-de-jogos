@@ -1,5 +1,5 @@
 /*************************************************************************************
- * Objetivo: Controller responsável pela regra de negócio referente ao CRUD de Usuários
+ * Objetivo: Controller responsável pela regra de negócio referente ao CRUD de Desenvolvedora Jogo
  * Data: 15/05/2025
  * Autor: Gabriel Souza Costa
  * Versão: 1.0
@@ -9,21 +9,21 @@
 const MESSAGE = require('../../modulo/config.js')
 
 // Import do arquivo para realizar o CRUD de dados no Banco de Dados
-const usuariosDAO = require('../../model/DAO/usuarios.js')
+const desenvolvedoraJogoDAO = require('../../model/DAO/desenvolvedora_jogo.js')
 
-// Função para inserir um novo usuário
-const inserirUsuario = async function (usuario, contentType) {
+// Função para inserir um novo relacionamento entre desenvolvedora e jogo
+const inserirDesenvolvedoraJogo = async function (desenvolvedoraJogo, contentType) {
     try {
         if (String(contentType).toLowerCase() === 'application/json') {
             if (
-                !usuario.nome_usuario ||
-                !usuario.email ||
-                !usuario.senha ||
-                !usuario.tbl_sexo_id
+                !desenvolvedoraJogo.id_desenvolvedora ||
+                !desenvolvedoraJogo.id_jogo ||
+                isNaN(desenvolvedoraJogo.id_desenvolvedora) ||
+                isNaN(desenvolvedoraJogo.id_jogo)
             ) {
                 return MESSAGE.ERROR_REQUIRED_FIELDS // 400
             } else {
-                let result = await usuariosDAO.insertUsuario(usuario)
+                let result = await desenvolvedoraJogoDAO.insertDesenvolvedoraJogo(desenvolvedoraJogo)
 
                 if (result) {
                     return MESSAGE.SUCESS_CREATED_ITEM // 201
@@ -35,29 +35,30 @@ const inserirUsuario = async function (usuario, contentType) {
             return MESSAGE.ERROR_CONTENT_TYPE // 415
         }
     } catch (error) {
-        console.error('Erro na controller inserirUsuario:', error)
+        console.error('Erro na controller inserirDesenvolvedoraJogo:', error)
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-// Função para atualizar um usuário
-const atualizarUsuario = async function (id, usuario, contentType) {
+// Função para atualizar um relacionamento entre desenvolvedora e jogo
+const atualizarDesenvolvedoraJogo = async function (id, desenvolvedoraJogo, contentType) {
     try {
         if (String(contentType).toLowerCase() === 'application/json') {
             if (
                 !id ||
-                !usuario.nome_usuario ||
-                !usuario.email ||
-                !usuario.senha ||
-                !usuario.tbl_sexo_id
+                !desenvolvedoraJogo.id_desenvolvedora ||
+                !desenvolvedoraJogo.id_jogo ||
+                isNaN(id) ||
+                isNaN(desenvolvedoraJogo.id_desenvolvedora) ||
+                isNaN(desenvolvedoraJogo.id_jogo)
             ) {
                 return MESSAGE.ERROR_REQUIRED_FIELDS // 400
             } else {
-                let usuarioExistente = await usuariosDAO.selectByIdUsuario(id)
+                let desenvolvedoraJogoExistente = await desenvolvedoraJogoDAO.selectByIdDesenvolvedoraJogo(id)
 
-                if (usuarioExistente) {
-                    usuario.id_usuario = id
-                    let result = await usuariosDAO.updateUsuario(usuario)
+                if (desenvolvedoraJogoExistente) {
+                    desenvolvedoraJogo.id = id
+                    let result = await desenvolvedoraJogoDAO.updateDesenvolvedoraJogo(desenvolvedoraJogo)
 
                     if (result) {
                         return MESSAGE.SUCESS_UPDATED_ITEM // 200
@@ -72,21 +73,21 @@ const atualizarUsuario = async function (id, usuario, contentType) {
             return MESSAGE.ERROR_CONTENT_TYPE // 415
         }
     } catch (error) {
-        console.error('Erro na controller atualizarUsuario:', error)
+        console.error('Erro na controller atualizarDesenvolvedoraJogo:', error)
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-// Função para excluir um usuário
-const excluirUsuario = async function (id) {
+// Função para excluir um relacionamento entre desenvolvedora e jogo
+const excluirDesenvolvedoraJogo = async function (id) {
     try {
-        if (!id || isNaN(id) || id <= 0) {
+        if (!id || isNaN(id)) {
             return MESSAGE.ERROR_REQUIRED_FIELDS // 400
         } else {
-            let usuarioExistente = await usuariosDAO.selectByIdUsuario(id)
+            let desenvolvedoraJogoExistente = await desenvolvedoraJogoDAO.selectByIdDesenvolvedoraJogo(id)
 
-            if (usuarioExistente) {
-                let result = await usuariosDAO.deleteUsuario(id)
+            if (desenvolvedoraJogoExistente) {
+                let result = await desenvolvedoraJogoDAO.deleteDesenvolvedoraJogo(id)
 
                 if (result) {
                     return MESSAGE.SUCESS_DELETED_ITEM // 200
@@ -98,60 +99,60 @@ const excluirUsuario = async function (id) {
             }
         }
     } catch (error) {
-        console.error('Erro na controller excluirUsuario:', error)
+        console.error('Erro na controller excluirDesenvolvedoraJogo:', error)
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-// Função para listar todos os usuários
-const listarUsuarios = async function () {
+// Função para listar todos os relacionamentos entre desenvolvedoras e jogos
+const listarDesenvolvedoraJogo = async function () {
     try {
-        let result = await usuariosDAO.selectAllUsuarios()
+        let result = await desenvolvedoraJogoDAO.selectAllDesenvolvedoraJogo()
 
         if (result) {
             return {
                 status: true,
                 status_code: 200,
                 items: result.length,
-                usuarios: result
+                desenvolvedora_jogo: result
             }
         } else {
             return MESSAGE.ERROR_NOT_FOUND // 404
         }
     } catch (error) {
-        console.error('Erro na controller listarUsuarios:', error)
+        console.error('Erro na controller listarDesenvolvedoraJogo:', error)
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
-// Função para buscar um usuário pelo ID
-const buscarUsuario = async function (id) {
+// Função para buscar um relacionamento entre desenvolvedora e jogo por ID
+const buscarDesenvolvedoraJogo = async function (id) {
     try {
-        if (!id || isNaN(id) || id <= 0) {
+        if (!id || isNaN(id)) {
             return MESSAGE.ERROR_REQUIRED_FIELDS // 400
         } else {
-            let result = await usuariosDAO.selectByIdUsuario(id)
+            let result = await desenvolvedoraJogoDAO.selectByIdDesenvolvedoraJogo(id)
 
             if (result) {
                 return {
                     status: true,
                     status_code: 200,
-                    usuario: result
+                    desenvolvedora_jogo: result
                 }
             } else {
                 return MESSAGE.ERROR_NOT_FOUND // 404
             }
         }
     } catch (error) {
-        console.error('Erro na controller buscarUsuario:', error)
+        console.error('Erro na controller buscarDesenvolvedoraJogo:', error)
         return MESSAGE.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
 
 module.exports = {
-    inserirUsuario,
-    atualizarUsuario,
-    excluirUsuario,
-    listarUsuarios,
-    buscarUsuario
+    inserirDesenvolvedoraJogo,
+    atualizarDesenvolvedoraJogo,
+    excluirDesenvolvedoraJogo,
+    listarDesenvolvedoraJogo,
+    buscarDesenvolvedoraJogo
 }

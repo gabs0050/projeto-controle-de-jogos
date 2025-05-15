@@ -1,6 +1,6 @@
 /*************************************************************************************
  * Objetivo: Controller responsável pela regra de negócio referente ao CRUD de Preços
- * Data: 11/02/2025
+ * Data: 15/05/2025
  * Autor: Gabriel Souza Costa
  * Versão: 1.0
  *************************************************************************************/

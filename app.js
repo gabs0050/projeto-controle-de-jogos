@@ -35,6 +35,7 @@ const controllerPlataforma = require('./controller/plataforma/controllerPlatafor
 const controllerTipoMoeda = require('./controller/tipo moeda/controllerTipoMoeda.js')
 const controllerUsuarios = require('./controller/usuarios/controllerUsuarios.js')
 const controllerPreco = require('./controller/preco/controllerPreco.js')
+const controllerDesenvolvedoraJogo = require('./controller/desenvolvedora/controllerDesenvolvedoraJogo.js')
 
 
 //Estabelecendo formato de dados que deverá chegar no body da requisição (POST ou PUT)
@@ -414,6 +415,47 @@ app.delete('/v1/controle-jogos/preco/:id', cors(), async (request, response) => 
     const id = parseInt(request.params.id)
 
     const result = await controllerPreco.excluirPreco(id)
+    response.status(result.status_code).json(result)
+})
+
+/*********************** tbl_desenvolvedora_jogo *************************/
+
+// Endpoint para inserir um novo relacionamento
+app.post('/v1/controle-jogos/desenvolvedora-jogo', cors(), bodyParserJSON, async (request, response) => {
+    const contentType = request.headers['content-type']
+    const dadosBody = request.body
+
+    const result = await controllerDesenvolvedoraJogo.inserirDesenvolvedoraJogo(dadosBody, contentType)
+    response.status(result.status_code).json(result)
+})
+
+// Endpoint para listar todos os relacionamentos
+app.get('/v1/controle-jogos/desenvolvedora-jogo', cors(), async (request, response) => {
+    const result = await controllerDesenvolvedoraJogo.listarDesenvolvedoraJogo()
+    response.status(result.status_code).json(result)
+})
+
+// Endpoint para buscar um relacionamento por ID
+app.get('/v1/controle-jogos/desenvolvedora-jogo/:id', cors(), async (request, response) => {
+    const id = parseInt(request.params.id)
+    const result = await controllerDesenvolvedoraJogo.buscarDesenvolvedoraJogo(id)
+    response.status(result.status_code).json(result)
+})
+
+// Endpoint para atualizar um relacionamento
+app.put('/v1/controle-jogos/desenvolvedora-jogo/:id', cors(), bodyParserJSON, async (request, response) => {
+    const contentType = request.headers['content-type']
+    const id = parseInt(request.params.id)
+    const dadosBody = request.body
+
+    const result = await controllerDesenvolvedoraJogo.atualizarDesenvolvedoraJogo(id, dadosBody, contentType)
+    response.status(result.status_code).json(result)
+})
+
+// Endpoint para excluir um relacionamento
+app.delete('/v1/controle-jogos/desenvolvedora-jogo/:id', cors(), async (request, response) => {
+    const id = parseInt(request.params.id)
+    const result = await controllerDesenvolvedoraJogo.excluirDesenvolvedoraJogo(id)
     response.status(result.status_code).json(result)
 })
 
